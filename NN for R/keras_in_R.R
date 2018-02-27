@@ -18,6 +18,7 @@ x_test <- x_test / 255
 y_train <- to_categorical(y_train, 10)
 y_test <- to_categorical(y_test, 10)
 
+# Model 1, RMSProp optimizer
 model <- keras_model_sequential()
 model %>% 
   layer_dense(units = 256, activation = "relu", input_shape = c(784)) %>% 
@@ -37,8 +38,34 @@ history <- model %>% fit(
   epochs = 30, batch_size = 128, 
   validation_split = 0.2
 )
-plot(history) %>% print()
+plot(history)
 
-model %>% evaluate(x_test, y_test) %>% print()
+model %>% evaluate(x_test, y_test)
 
-model %>% predict_classes(x_test) %>% print()
+#model %>% predict_classes(x_test)
+
+# Model 2, Adam optimizer
+model2 <- keras_model_sequential()
+model2 %>% 
+  layer_dense(units = 256, activation = "relu", input_shape = c(784)) %>% 
+  layer_dropout(rate = 0.4) %>% 
+  layer_dense(units = 128, activation = "relu") %>% 
+  layer_dropout(rate = 0.3) %>% 
+  layer_dense(units = 10, activation = "softmax")
+
+model2 %>% compile(
+  loss = "categorical_crossentropy", 
+  optimizer = optimizer_adam(), 
+  metrics = c("accuracy")
+)
+
+history2 <- model2 %>% fit(
+  x_train, y_train, 
+  epochs = 30, batch_size = 128, 
+  validation_split = 0.2
+)
+plot(history)
+
+model2 %>% evaluate(x_test, y_test)
+
+#model2 %>% predict_classes(x_test)
