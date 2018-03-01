@@ -30,13 +30,12 @@ model %>%
 model %>% compile(
   loss = "categorical_crossentropy", 
   optimizer = optimizer_rmsprop(), 
-  metrics = c("accuracy")#, 
-  #config = tf$device('/cpu:0') # this line should force TensorFlow to run on CPU
+  metrics = c("accuracy")
 )
 
 history <- model %>% fit(
   x_train, y_train, 
-  epochs = 15, batch_size = 128, 
+  epochs = 30, batch_size = 128, 
   validation_split = 0.2
 )
 plot(history)
@@ -57,16 +56,15 @@ model2 %>%
 model2 %>% compile(
   loss = "categorical_crossentropy", 
   optimizer = optimizer_adam(), 
-  metrics = c("accuracy")#, 
-  #config = tf$device('/cpu:0') # this line should force TensorFlow to run on CPU
+  metrics = c("accuracy")
 )
 
 history2 <- model2 %>% fit(
   x_train, y_train, 
-  epochs = 15, batch_size = 128, 
+  epochs = 30, batch_size = 128, 
   validation_split = 0.2
 )
-plot(history2)
+plot(history)
 
 model2 %>% evaluate(x_test, y_test)
 
