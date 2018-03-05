@@ -80,10 +80,7 @@ model %>%
   compile(loss = 'categorical_crossentropy', 
           # Using Adam instead of SGD produced almost certain beliefs from the 
           # model, which were also 100% correct over this small dataset.
-          optimizer = optimizer_sgd(lr = 0.01, 
-                                    decay = 1e-6, 
-                                    momentum = 0.9, 
-                                    nesterov = T), 
+          optimizer = optimizer_adam(), 
           metrics = c('accuracy'))
 
 # Fit model
