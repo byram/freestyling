@@ -1,12 +1,7 @@
 library(keras)
 library(dplyr)
-library(tidyr)
 library(data.table)
 set.seed(42)
-
-#batch_size <- 128
-#num_classes <- 2
-#epochs <- 10
 
 titanicData <- Titanic %>% 
   data.table(stringsAsFactors = T) %>% 
@@ -27,12 +22,12 @@ yTrain <- partitionTrain[, c(9:10)]
 # Testing dataset
 xTest <- titanicDataBin[-c(1:nrow(partitionTrain)), -c(9, 10)]
 yTest <- titanicDataBin[-c(1:nrow(partitionTrain)), c(9, 10)]
+xLogTest <- titanicData[-c(1:nrow(partitionTrain)), -4]
+yLogTest <- titanicData[-c(1:nrow(partitionTrain)), 4]
 
 model <- keras_model_sequential()
 model %>% 
-  layer_dense(units = 128, activation = "relu", input_shape = c(8)) %>% 
-  layer_dropout(rate = 0.2) %>% 
-  layer_dense(units = 128, activation = "relu") %>% 
+  layer_dense(units = 7, activation = "relu", input_shape = c(8)) %>% 
   layer_dropout(rate = 0.2) %>% 
   layer_dense(units = 2, activation = "softmax")
 
@@ -48,4 +43,11 @@ history <- model %>% fit(
   validation_split = 0.2
 )
 
-model %>% evaluate(xTest, yTest)
+model %>% evaluate(xTest, yTest) %>% print()
+
+logreg <- glm(Survived ~ Class + Age + Sex, family = binomial, data = titanicData) %>% 
+  {factor(predict(., newdata = xLogTest) > 0, 
+          labels = c("Survived", "Died"))} %>% 
+  as.numeric() %>% 
+  {sum(. == as.numeric(yLogTest)) / length(yLogTest)} %>% 
+  print()
