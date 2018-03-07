@@ -16,7 +16,7 @@ titanicDataBin <- titanicData %>%
          to_categorical(.$Survived)[, -1])}
 
 # Training dataset
-partitionTrain <- titanicDataBin[1:round(nrow(titanicDataBin) * 0.8, 0), ]
+partitionTrain <- titanicDataBin[1:round(nrow(titanicDataBin) * 0.75, 0), ]
 xTrain <- partitionTrain[, -c(9, 10)]
 yTrain <- partitionTrain[, c(9:10)]
 # Testing dataset
@@ -27,7 +27,7 @@ yLogTest <- titanicData[-c(1:nrow(partitionTrain)), 4]
 
 model <- keras_model_sequential()
 model %>% 
-  layer_dense(units = 7, activation = "relu", input_shape = c(8)) %>% 
+  layer_dense(units = 6, activation = "relu", input_shape = c(8)) %>% 
   layer_dropout(rate = 0.2) %>% 
   layer_dense(units = 2, activation = "softmax")
 
@@ -39,8 +39,8 @@ model %>% compile(
 
 history <- model %>% fit(
   xTrain, yTrain, 
-  epochs = 30, batch_size = 128, 
-  validation_split = 0.2
+  epochs = 20, batch_size = 4, 
+  validation_split = 1 / 3
 )
 
 model %>% evaluate(xTest, yTest) %>% print()
@@ -51,3 +51,4 @@ logreg <- glm(Survived ~ Class + Age + Sex, family = binomial, data = titanicDat
   as.numeric() %>% 
   {sum(. == as.numeric(yLogTest)) / length(yLogTest)} %>% 
   print()
+
