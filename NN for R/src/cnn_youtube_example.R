@@ -1,5 +1,5 @@
-require(keras)
-require(EBImage)
+library(keras)
+library(EBImage)
 
 # Import data
 directory <- "data/CNN_example/"
