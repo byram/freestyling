@@ -19,12 +19,11 @@ y_train <- to_categorical(y_train, 10)
 y_test <- to_categorical(y_test, 10)
 
 # Model 1, RMSProp optimizer
-model <- keras_model_sequential()
-model %>% 
-  layer_dense(units = 256, activation = "relu", input_shape = c(784)) %>% 
-  layer_dropout(rate = 0.4) %>% 
-  layer_dense(units = 128, activation = "relu") %>% 
-  layer_dropout(rate = 0.3) %>% 
+model <- keras_model_sequential() %>%  
+  layer_dense(units = 256, activation = "relu", input_shape = c(28 * 28)) %>% 
+#  layer_dropout(rate = 0.4) %>% 
+#  layer_dense(units = 128, activation = "relu") %>% 
+#  layer_dropout(rate = 0.3) %>% 
   layer_dense(units = 10, activation = "softmax")
 
 model %>% compile(
@@ -41,14 +40,14 @@ history <- model %>% fit(
 )
 plot(history)
 
-model %>% evaluate(x_test, y_test)
+model %>% evaluate(x_test, y_test) %>% print()
 
 #model %>% predict_classes(x_test)
 
 # Model 2, Adam optimizer
 model2 <- keras_model_sequential()
 model2 %>% 
-  layer_dense(units = 256, activation = "relu", input_shape = c(784)) %>% 
+  layer_dense(units = 256, activation = "relu", input_shape = c(28 * 28)) %>% 
   layer_dropout(rate = 0.4) %>% 
   layer_dense(units = 128, activation = "relu") %>% 
   layer_dropout(rate = 0.3) %>% 
@@ -68,6 +67,6 @@ history2 <- model2 %>% fit(
 )
 plot(history2)
 
-model2 %>% evaluate(x_test, y_test)
+model2 %>% evaluate(x_test, y_test) %>% print()
 
 #model2 %>% predict_classes(x_test)

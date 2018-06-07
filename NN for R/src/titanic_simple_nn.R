@@ -43,12 +43,13 @@ history <- model %>% fit(
   validation_split = 1 / 3
 )
 
-model %>% evaluate(xTest, yTest) %>% print()
+model %>% 
+  evaluate(xTest, yTest) %>% 
+  {cat("Neural Network accuracy: ", round(.[[2]] * 100, 1), "%", sep = "")}
 
 logreg <- glm(Survived ~ Class + Age + Sex, family = binomial, data = titanicData) %>% 
   {factor(predict(., newdata = xLogTest) > 0, 
           labels = c("Survived", "Died"))} %>% 
   as.numeric() %>% 
   {sum(. == as.numeric(yLogTest)) / length(yLogTest)} %>% 
-  print()
-
+  {cat("Logistic Regression accuracy: ", round(. * 100, 1), "%", sep = "")}
