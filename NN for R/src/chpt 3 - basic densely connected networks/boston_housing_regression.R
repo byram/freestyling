@@ -24,6 +24,7 @@ build_model <- function() {
 }
 
 k <- 4
+set.seed(1)
 indices <- sample(1:nrow(train_data))
 folds <- cut(indices, breaks = k, labels = FALSE)
 
