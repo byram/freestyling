@@ -21,16 +21,15 @@ y_test <- to_categorical(y_test, 10)
 # Model 1, RMSProp optimizer
 model <- keras_model_sequential() %>%  
   layer_dense(units = 256, activation = "relu", input_shape = c(28 * 28)) %>% 
-#  layer_dropout(rate = 0.4) %>% 
-#  layer_dense(units = 128, activation = "relu") %>% 
-#  layer_dropout(rate = 0.3) %>% 
+  layer_dropout(rate = 0.4) %>% 
+  layer_dense(units = 128, activation = "relu") %>% 
+  layer_dropout(rate = 0.3) %>% 
   layer_dense(units = 10, activation = "softmax")
 
 model %>% compile(
   loss = "categorical_crossentropy", 
   optimizer = optimizer_rmsprop(), 
-  metrics = c("accuracy")#, 
-  #config = tf$device('/cpu:0') # this line should force TensorFlow to run on CPU
+  metrics = c("accuracy")
 )
 
 history <- model %>% fit(
