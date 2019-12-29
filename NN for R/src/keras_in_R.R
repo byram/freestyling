@@ -39,7 +39,7 @@ history <- model %>% fit(
 )
 plot(history)
 
-model %>% evaluate(x_test, y_test) %>% print()
+model %>% evaluate(x_test, y_test, verbose = 0) %>% print()
 
 #model %>% predict_classes(x_test)
 
@@ -66,6 +66,6 @@ history2 <- model2 %>% fit(
 )
 plot(history2)
 
-model2 %>% evaluate(x_test, y_test) %>% print()
+model2 %>% evaluate(x_test, y_test, verbose = 0) %>% print()
 
 #model2 %>% predict_classes(x_test)
